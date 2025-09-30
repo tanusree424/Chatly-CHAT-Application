@@ -35,7 +35,7 @@ const Sidebar = () => {
  
   return (
     <>
-    <div className={`lg:w-[28%] ${selectedUser ? "hidden" : "sm:block"} lg:block w-full h-screen bg-slate-100 flex flex-col shadow-xl relative`}>
+    <div className={`lg:w-[28%] ${selectedUser ? "hidden" : "sm:block"}  lg:block w-full h-screen bg-slate-100 flex flex-col shadow-xl relative`}>
       {/* Header */}
       <div className="w-full h-[280px] px-6 py-6 bg-gradient-to-r from-cyan-400 to-sky-500 rounded-b-[35%] shadow-md flex flex-col gap-5">
         <h1 className="text-white text-3xl font-extrabold tracking-wide">Chatly</h1>
@@ -113,31 +113,37 @@ const Sidebar = () => {
       </div>
 
       {/* User List (Bottom Scrollable) */}
-      <div className="w-full overflow-auto flex flex-col items-center gap-[20px] mt-[20px]">
-        {otherUsers && otherUsers.length > 0 ? (
-          otherUsers.map((user, index) => (
-            <div
-              key={index}
-              className="w-[95%] h-[60px] flex justify-start items-center gap-[20px] shadow-lg rounded-full hover:bg-slate-300 cursor-pointer"
-              onClick={() => dispatch(setSelectedUser(user))}
-            >
-              <div className="w-[60px] h-[60px] rounded-full overflow-hidden flex items-center shadow">
-                <img
-                  src={user.picture ? user.picture : pic}
-                  alt={user.name}
-                  className="w-full h-full object-cover"
-                  title={user.name}
-                />
-              </div>
-              <h1 className="text-gray-800 text-xl font-semibold">
-                {user.name ? user.name : user.username}
-              </h1>
-            </div>
-          ))
-        ) : (
-          <p className="text-white text-sm">No Users</p>
-        )}
-      </div>
+{/* User List (Scrollable) */}
+  <div
+    className="flex-1 w-full flex flex-col items-center gap-[20px] mt-[20px] 
+               overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-200 px-2"
+  >
+    {otherUsers && otherUsers.length > 0 ? (
+      otherUsers.map((user, index) => (
+        <div
+          key={index}
+          className="w-[95%] h-[60px] flex justify-start items-center gap-[20px] shadow-lg rounded-full hover:bg-slate-300 cursor-pointer"
+          onClick={() => dispatch(setSelectedUser(user))}
+        >
+          <div className="w-[60px] h-[60px] rounded-full overflow-hidden flex items-center shadow">
+            <img
+              src={user.picture ? user.picture : pic}
+              alt={user.name}
+              className="w-full h-full object-cover"
+              title={user.name}
+            />
+          </div>
+          <h1 className="text-gray-800 text-xl font-semibold">
+            {user.name ? user.name : user.username}
+          </h1>
+        </div>
+      ))
+    ) : (
+      <p className="text-gray-600 text-sm">No Users</p>
+    )}
+  </div>
+
+
 
       {/* Logout Button */}
       <div className="fixed bottom-5 left-5">

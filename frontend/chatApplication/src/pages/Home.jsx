@@ -6,7 +6,7 @@ import MessageArea from '../Components/MessageArea';
 
 const Home = () => {
   const { selectedUser } = useSelector((state) => state.user); // note: state.user, না state.selectedUser
-  console.log(selectedUser);
+ // console.log(selectedUser);
 
   return (
     <div className="flex w-full h-screen">

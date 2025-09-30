@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from '../redux/slices/UserSlice.js';
 import { serverURL } from '../main.jsx';
+import useSocket from '../CustomHooks/UserSocket.jsx';
 
 
 
@@ -17,7 +18,7 @@ const Login = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userData = useSelector((state) => state.user);
+  const {userData, getOnlineUsers, socket }= useSelector((state) => state.user);
  // console.log(userData);
 
   const handleChange = (e) => {
@@ -41,10 +42,13 @@ const handleSubmit = async (e) => {
 
     // ২. Redux এ login user store করা
     dispatch(setUserData(response.data.user));
+    console.log(response.data.user);
+   
 
     // ৩. Login successful হলে Other Users fetch করা
     const usersRes = await axios.get(`${serverURL}/api/v1/all-users`, { withCredentials: true });
     dispatch(setOtherUsers(usersRes.data.users));
+     useSocket(userData?._id);
 
     setLoading(false);
 

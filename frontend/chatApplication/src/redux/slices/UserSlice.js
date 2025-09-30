@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   userData: null,
   otherUsers: [],
-  selectedUser:null
+  selectedUser:null,
+  socket:null,
+  getOnlineUsers:null,
 };
 
 const userSlice = createSlice({
@@ -22,9 +24,15 @@ const userSlice = createSlice({
     },
     setSelectedUser: (state, action) => {
       state.selectedUser = action.payload;
+    },
+    setSocket:(state, action)=>{
+      state.socket = action.payload;
+    },
+    setOnlineUsers:(state,action)=>{
+      state.getOnlineUsers= action.payload
     }
   }
 });
 
-export const { setUserData, setOtherUsers, clearUserData, setSelectedUser } = userSlice.actions;
+export const { setUserData, setOtherUsers, clearUserData, setSelectedUser , setSocket , setOnlineUsers } = userSlice.actions;
 export default userSlice.reducer;

@@ -10,6 +10,7 @@ import Profile from './pages/Profile'
 import { toast ,  ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import getOtherUsers from './CustomHooks/getOtherUsers';
+import useSocket from './CustomHooks/UserSocket'
 
 const App = () => {
   // custom hook call
@@ -18,10 +19,12 @@ const App = () => {
 
   // redux থেকে user data আনো
   const { userData } = useSelector((state) => state.user);
-  const { otherUsers } = useSelector((state) => state.user);
+  const { otherUsers , socket , } = useSelector((state) => state.user);
  // console.log(userData);
  // console.log(otherUsers);
-
+//useSocket(userData._id);
+ //console.log(socket);
+ useSocket(userData?._id);
   return (
     <div>
       <ToastContainer 

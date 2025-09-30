@@ -1,4 +1,4 @@
-import {mongoose} from "../config/db.js";
+import mongoose from "../config/db.js";
 
 const conversationSchema = new mongoose.Schema({
     participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
