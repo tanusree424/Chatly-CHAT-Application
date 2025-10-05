@@ -20,7 +20,7 @@ const getOtherUsers = async () => {
             }
         };
         fetchOtherUsers();
-    }, [otherUsers]);
+    }, [otherUsers , dispatch]);
 
 }
 

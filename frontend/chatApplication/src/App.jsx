@@ -11,6 +11,7 @@ import { toast ,  ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import getOtherUsers from './CustomHooks/getOtherUsers';
 import useSocket from './CustomHooks/UserSocket'
+import  UserProfile from "./pages/UserProfile";
 
 const App = () => {
   // custom hook call
@@ -18,7 +19,7 @@ const App = () => {
   getOtherUsers();
 
   // redux থেকে user data আনো
-  const { userData } = useSelector((state) => state.user);
+  const { userData , selectedUser } = useSelector((state) => state.user);
   const { otherUsers , socket , } = useSelector((state) => state.user);
  // console.log(userData);
  // console.log(otherUsers);
@@ -55,6 +56,10 @@ const App = () => {
       <Route
         path="/profile"
         element={userData ? <Profile /> : <Navigate to="/signup" />}
+      />
+        <Route
+        path="/user/profile"
+        element={selectedUser ? <UserProfile /> : <Navigate to="/" />}
       />
     </Routes>
        </div>

@@ -19,7 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {userData, getOnlineUsers, socket }= useSelector((state) => state.user);
- // console.log(userData);
+  console.log(getOnlineUsers);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

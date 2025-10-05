@@ -5,16 +5,16 @@ import { useSelector } from 'react-redux';
 import MessageArea from '../Components/MessageArea';
 
 const Home = () => {
-  const { selectedUser } = useSelector((state) => state.user); // note: state.user, না state.selectedUser
+  const { selectedUser  } = useSelector((state) => state.user); // note: state.user, না state.selectedUser
  // console.log(selectedUser);
 
   return (
-    <div className="flex w-full h-screen">
+    <div className="flex w-full h-screen ">
       {/* Sidebar */}
       <Sidebar />
 
       {/* Main Content */}
-      <div className="flex-1 bg-gray-100 flex items-center justify-center">
+      <div className="flex-1 bg-gray-100 overflow-hidden flex items-center justify-center">
         {selectedUser ? (
           // যদি user select করা থাকে, MessageArea দেখাবে
           <MessageArea />

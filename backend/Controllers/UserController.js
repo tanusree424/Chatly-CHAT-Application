@@ -81,3 +81,35 @@ export const getAllUsersExceptLoginUser = async (req, res) => {
     });
   }
 };
+
+
+// Search Users by username or name
+export const searchUser = async(req,res)=>{
+  try {
+    let {query} =  req.query;
+    if (!query) {
+      return res.status(400).json({
+        message:"No Search Value"
+      });
+   
+    }
+      let user = await userModel.find({
+        $or:[
+          {
+            name: {$regex:query , $options:"i"},
+
+          },
+          {
+            userName: {$regex:query , $options:"i"}
+          }
+        ]
+        
+      });
+      return res.status(200).json({
+        userData:user
+      });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(`errror searching due to ${error}`)
+  }
+}

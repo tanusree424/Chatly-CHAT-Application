@@ -12,6 +12,7 @@ import { serverURL } from "../main.jsx";
 import SenderMessage from "./SenderMessage.jsx";
 import ReceiverMessage from "./ReceiverMessage.jsx";
 import useSocket from "../CustomHooks/UserSocket.jsx";
+import EmojiPicker from 'emoji-picker-react';
 
 const MessageArea = () => {
   const dispatch = useDispatch();
@@ -20,23 +21,16 @@ const MessageArea = () => {
 
   const [newMessage, setNewMessage] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [FrontendImage, setFrontendImage] = useState(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Socket listener
-  // const socket = useSocket(userData?._id, ({ senderId, message }) => {
-  //   // Only add message if it's from the currently selected user
-  //   if (selectedUser && senderId === selectedUser._id) {
-  //     dispatch(setMessageData([...messageData, { sender: senderId, message }]));
-  //   }
-  // });
-const socket = useSocket(userData?._id, ({ senderId, message }) => {
-  console.log("📩 New message received:", { senderId, message }); // <-- console log added
+  const socket = useSocket(userData?._id, ({ senderId, message }) => {
+    if (selectedUser && senderId === selectedUser._id) {
+      dispatch(setMessageData([...messageData, { sender: senderId, message }]));
+    }
+  });
 
-  // Only add message if it's from the currently selected user
-  if (selectedUser && senderId === selectedUser._id) {
-    dispatch(setMessageData([...messageData, { sender: senderId, message }]));
-  }
-});
   // Fetch messages when selectedUser changes
   useEffect(() => {
     if (!selectedUser) return;
@@ -70,7 +64,6 @@ const socket = useSocket(userData?._id, ({ senderId, message }) => {
     if (selectedImage) formData.append("image", selectedImage);
 
     try {
-      // Send message via API
       const response = await axios.post(
         `${serverURL}/api/v1/messages/send/${selectedUser._id}`,
         formData,
@@ -89,6 +82,7 @@ const socket = useSocket(userData?._id, ({ senderId, message }) => {
       dispatch(setMessageData([...messageData, response.data.newMessage]));
       setNewMessage("");
       setSelectedImage(null);
+      setFrontendImage(null);
     } catch (error) {
       console.log("Error sending message:", error.message);
     }
@@ -132,8 +126,8 @@ const socket = useSocket(userData?._id, ({ senderId, message }) => {
       </div>
 
       {/* Chat Body */}
-      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
-        {messageData && messageData.length > 0  ? (
+      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4 custom-scrollbar">
+        {messageData && messageData.length > 0 ? (
           messageData.map((msg) => (
             <div key={msg._id || Math.random()}>
               {msg.sender === userData._id ? (
@@ -151,11 +145,36 @@ const socket = useSocket(userData?._id, ({ senderId, message }) => {
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Image Preview */}
+      {FrontendImage && (
+        <div className="absolute bottom-[120px] left-[40px] bg-white shadow-lg p-2 rounded-md z-50">
+          <img src={FrontendImage} className="max-h-[200px] rounded-md" alt="Preview" />
+          <button
+            className="text-red-500 text-sm mt-1"
+            onClick={() => {
+              setSelectedImage(null);
+              setFrontendImage(null);
+            }}
+          >
+            ❌ Remove
+          </button>
+        </div>
+      )}
+
+      {/* Emoji Picker */}
+      {showEmojiPicker && (
+        <div className="absolute bottom-16 left-4 z-50">
+          <EmojiPicker
+            onEmojiClick={(emojiData) => setNewMessage(prev => prev + emojiData.emoji)}
+          />
+        </div>
+      )}
+
       {/* Chat Input */}
       <div className="w-full px-4 py-3 bg-white border-t border-gray-300">
         <form
           onSubmit={handleSendMessage}
-          className="flex items-center gap-3 w-full bg-gray-100 rounded-full px-4 py-2 shadow-md"
+          className="flex items-center gap-3 w-full bg-gray-100 rounded-full px-4 py-2 shadow-md relative"
         >
           <label>
             <FaImages className="cursor-pointer hover:text-[#127799] transition text-xl" />
@@ -163,10 +182,19 @@ const socket = useSocket(userData?._id, ({ senderId, message }) => {
               type="file"
               className="hidden"
               accept="image/*"
-              onChange={(e) => setSelectedImage(e.target.files[0])}
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  setSelectedImage(file);
+                  setFrontendImage(URL.createObjectURL(file));
+                }
+              }}
             />
           </label>
-          <MdEmojiEmotions className="cursor-pointer hover:text-[#127799] transition text-xl" />
+          <MdEmojiEmotions
+            className="cursor-pointer hover:text-[#127799] transition text-xl"
+            onClick={() => setShowEmojiPicker(prev => !prev)}
+          />
           <input
             type="text"
             name="message"
