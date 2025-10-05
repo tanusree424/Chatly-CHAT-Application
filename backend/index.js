@@ -12,7 +12,7 @@ import isAuth from "./Middleware/isAuth.js";
 import express from  "express"
 
 dotenv.config();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT ;
 
 // Middlewares
 app.use(cors({

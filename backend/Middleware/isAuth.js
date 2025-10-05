@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
-
+import dotenv from  "dotenv";
+dotenv.config();
 const isAuth = async (req, res, next) => {
   try {
     const token = req.cookies.token;
@@ -7,7 +8,7 @@ const isAuth = async (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized Access" });
     }
 
-    const SECRET = process.env.JWT_SECRET || "fallbackSecret";
+    const SECRET = process.env.SECRECT_KEY || "fallbackSecret";
     const decoded = jwt.verify(token, SECRET);
 
     req.userId = decoded.id; // genToken এ আমরা { id: userId } পাঠাচ্ছি
