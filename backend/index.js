@@ -29,8 +29,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use("/api/v1/auth", Authrouter);
-app.use("/api/v1/users", isAuth, userRoutes);
-app.use("/api/v1/messages", isAuth, messageRouter);
+app.use("/api/v1/users",  userRoutes);
+app.use("/api/v1/messages", messageRouter);
 
 // Start server
 server.listen(PORT, async () => {
