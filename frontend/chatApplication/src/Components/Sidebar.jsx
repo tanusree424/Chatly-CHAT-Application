@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import pic from '../Assets/pic.png';
+import pic from '../assets/pic.png';
+
 import { IoIosSearch } from 'react-icons/io';
 import { AiOutlineLogout } from "react-icons/ai";
 import axios from 'axios';
