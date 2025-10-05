@@ -16,10 +16,13 @@ const PORT = process.env.PORT ;
 
 // Middlewares
 app.use(cors({
-     origin:"https://chatly-chat-application-4iw5.onrender.com",
- 
-    credentials: true // cookies পাঠাতে হলে অবশ্যই true
+  origin: [
+    "https://chatly-chat-application-4iw5.onrender.com",
+    "http://localhost:5173" // dev time
+  ],
+  credentials: true
 }));
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
