@@ -6,13 +6,19 @@ import cors from "cors";
 const app = express();
 const server = http.createServer(app);
 
+
+
 const io = new Server(server, {
   cors: {
-    origin: "https://chatly-chat-application-4iw5.onrender.com",
+    origin: [
+      "https://chatly-chat-application-4iw5.onrender.com",
+      "http://localhost:5173"
+    ],
     methods: ["GET", "POST"],
-    credentials: true,
-  },
+    credentials: true
+  }
 });
+
 
 // Online users: { userId: socketId }
  const onlineUsers = {};
