@@ -170,47 +170,51 @@ const MessageArea = () => {
         </div>
       )}
 
-      {/* Chat Input */}
-      <div className="w-full px-4 py-3 bg-white border-t border-gray-300">
-        <form
-          onSubmit={handleSendMessage}
-          className="flex items-center gap-3 w-full bg-gray-100 rounded-full px-4 py-2 shadow-md relative"
-        >
-          <label>
-            <FaImages className="cursor-pointer hover:text-[#127799] transition text-xl" />
-            <input
-              type="file"
-              className="hidden"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files[0];
-                if (file) {
-                  setSelectedImage(file);
-                  setFrontendImage(URL.createObjectURL(file));
-                }
-              }}
-            />
-          </label>
-          <MdEmojiEmotions
-            className="cursor-pointer hover:text-[#127799] transition text-xl"
-            onClick={() => setShowEmojiPicker(prev => !prev)}
-          />
-          <input
-            type="text"
-            name="message"
-            className="flex-1 bg-transparent outline-none text-gray-700 px-2 text-sm md:text-base"
-            placeholder="Type a message..."
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-          />
-          <button
-            type="submit"
-            className="flex items-center justify-center bg-[#127799] text-white p-3 rounded-full hover:bg-[#0f5f77] transition"
-          >
-            <IoSendSharp className="text-lg" />
-          </button>
-        </form>
-      </div>
+   {/* Chat Input */}
+<div className="w-full px-4 py-3 bg-white border-t border-gray-300 sticky bottom-0 left-0 z-50">
+  <form
+    onSubmit={handleSendMessage}
+    className="flex items-center gap-3 w-full bg-gray-100 rounded-full px-4 py-2 shadow-md relative"
+  >
+    <label>
+      <FaImages className="cursor-pointer hover:text-[#127799] transition text-xl" />
+      <input
+        type="file"
+        className="hidden"
+        accept="image/*"
+        onChange={(e) => {
+          const file = e.target.files[0];
+          if (file) {
+            setSelectedImage(file);
+            setFrontendImage(URL.createObjectURL(file));
+          }
+        }}
+      />
+    </label>
+
+    <MdEmojiEmotions
+      className="cursor-pointer hover:text-[#127799] transition text-xl"
+      onClick={() => setShowEmojiPicker(prev => !prev)}
+    />
+
+    <input
+      type="text"
+      name="message"
+      className="flex-1 bg-transparent outline-none text-gray-700 px-2 text-sm md:text-base"
+      placeholder="Type a message..."
+      value={newMessage}
+      onChange={(e) => setNewMessage(e.target.value)}
+    />
+
+    <button
+      type="submit"
+      className="flex items-center justify-center bg-[#127799] text-white p-3 rounded-full hover:bg-[#0f5f77] transition shrink-0"
+    >
+      <IoSendSharp className="text-lg" />
+    </button>
+  </form>
+</div>
+
     </div>
   );
 };
