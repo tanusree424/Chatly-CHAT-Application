@@ -25,7 +25,7 @@ export const signup = async(req,res)=>{
   } 
   const user = await  userModel.create({username , email  , password : hashedPassword });
   const token =  genToken( user._id);
-  res.cookie("token", token,{ httpOnly: true, maxAge: 7*24*60*60*1000, sameSite:"None", secure:true });
+  res.cookie("token", token,{ httpOnly: true, maxAge: 7*24*60*60*1000, sameSite:"None", secure: process.env.NODE_ENV === "production" ? true : false, });
   return res.status(201).json({
     message:"USER CREATED SUCCCESSSFULLY",
     token:token,
@@ -56,7 +56,7 @@ export const login = async(req,res)=>{
     }
     const {password:_, ...userData} = userExist.toObject();
     const token = await genToken(userExist._id);
-    res.cookie("token", token , {httpOnly:true, maxAge:7*24*60*60*1000, sameSite:"None", secure:true});
+    res.cookie("token", token , {httpOnly:true, maxAge:7*24*60*60*1000, sameSite:"None", secure: process.env.NODE_ENV === "production" ? true : false,});
     return res.status(200).json({
         message:"LoggedIn Successful",
         token:token,
@@ -81,7 +81,7 @@ export const logout = async (req, res) => {
 
     res.clearCookie("token", {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production" ? true : false,
       sameSite: "None"
     });
 
