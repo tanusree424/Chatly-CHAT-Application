@@ -46,7 +46,7 @@ const handleSubmit = async (e) => {
    
 
     // ৩. Login successful হলে Other Users fetch করা
-    const usersRes = await axios.get(`${serverURL}/api/v1/all-users`, { withCredentials: true });
+    const usersRes = await axios.get(`${serverURL}/api/v1/users/all-users`, { withCredentials: true });
     console.log(usersRes.data.users);
     dispatch(setOtherUsers(usersRes.data.users));
      useSocket(userData?._id);
